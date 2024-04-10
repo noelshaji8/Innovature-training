@@ -1,6 +1,7 @@
 const express = require("express")
 const router = express.Router()
 
+//ADD ENDPOINT
 router.post("/add",  (req, res) => {
     const num1 = req.body.num1 * 1
     const num2 = req.body.num2 * 1
@@ -15,6 +16,7 @@ router.post("/add",  (req, res) => {
 
 })
 
+//SUBTRACT ENDPOINT
 router.post("/subtract",  (req, res) => {
     const num1 = req.body.num1 * 1
     const num2 = req.body.num2 * 1
@@ -29,6 +31,7 @@ router.post("/subtract",  (req, res) => {
 
 })
 
+//MULTIPLY ENDPOINT
 router.post("/multiply",  (req, res) => {
     const num1 = req.body.num1 * 1
     const num2 = req.body.num2 * 1
@@ -43,6 +46,7 @@ router.post("/multiply",  (req, res) => {
 
 })
 
+//DIVIDE ENDPOINT
 router.post("/divide",  (req, res) => {
     const num1 = req.body.num1 * 1
     const num2 = req.body.num2 * 1

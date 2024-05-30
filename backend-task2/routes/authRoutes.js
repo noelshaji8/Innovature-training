@@ -11,6 +11,11 @@ const accessSecret = "8d245805079f46dd71f9a436adab2153456cd759f2463841e647c1dbf6
 router.post("/signup", async (req, res) => {
 
     try {
+        //CHECK IS USER ALREADY EXISTS
+        const checkUser = await User.findOne({ $or: req.body.username });
+        if (checkUser) {
+            return res.status(400).json('User already exists');
+        }
 
         //PASSWORD ENCODED
         const salt = await bcrypt.genSalt()
@@ -19,7 +24,7 @@ router.post("/signup", async (req, res) => {
         const user = new User({ uid: uid, username: req.body.username, password: hashPassword })
         user.save()
             .then((result) => { res.send(result) })
-            .catch(() => { res.status(400).send("error") })
+            .catch(() => { res.status(400).send("error saving in db") })
     } catch {
         res.status(500).send()
     }
@@ -55,9 +60,9 @@ router.post("/login", async (req, res) => {
 
     const tokenUser = { username: requiredUser.username, password: requiredUser.password, uid: requiredUser.uid }
     const userjwt = tokenUser
-    const accessToken = jwt.sign(userjwt, accessSecret,{expiresIn: "900s"})
+    const accessToken = jwt.sign(userjwt, accessSecret, { expiresIn: "900s" })
     res.cookie("token", accessToken)
-    return res.send({accessToken: accessToken})
+    return res.send({ accessToken: accessToken })
 })
 
 module.exports = router

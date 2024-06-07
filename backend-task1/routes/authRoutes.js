@@ -14,6 +14,12 @@ let users = []
 //PASSWORD ENCODED
 
 router.post("/signup", async (req, res) => {
+
+    const checkUsers = users.find(user => user.username === req.body.username);
+
+    if (checkUsers) {
+        return res.status(400).json('User already exists');
+    }
     
     try {
         const salt = await bcrypt.genSalt()

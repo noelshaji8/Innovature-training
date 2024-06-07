@@ -11,11 +11,6 @@ const accessSecret = "8d245805079f46dd71f9a436adab2153456cd759f2463841e647c1dbf6
 router.post("/signup", async (req, res) => {
 
     try {
-        //CHECK IS USER ALREADY EXISTS
-        const checkUser = await User.findOne({ $or: req.body.username });
-        if (checkUser) {
-            return res.status(400).json('User already exists');
-        }
 
         //PASSWORD ENCODED
         const salt = await bcrypt.genSalt()
@@ -23,9 +18,12 @@ router.post("/signup", async (req, res) => {
         const uid = Math.floor(Math.random() * 100)
         const user = new User({ uid: uid, username: req.body.username, password: hashPassword })
         user.save()
-            .then((result) => { res.send(result) })
-            .catch(() => { res.status(400).send("error saving in db") })
+            .then((result) => { res.send(result);
+                console.log(result)
+             })
+            .catch(() => { res.status(400).send("User exists");console.log("error") })
     } catch {
+        console.log("error2")
         res.status(500).send()
     }
 });
@@ -50,10 +48,10 @@ router.post("/login", async (req, res) => {
             console.log("successful login")
         }
         else {
-            return res.status(404).send("failed")
+            return res.status(404).send("failed login")
         }
     } catch (err) {
-        return res.status(500).send("err2")
+        return res.status(500).send("Invalid input")
     }
 
     //TOKEN GENERATION & SET AS COOKIE (TOKEN VALID FOR 15 MINS)

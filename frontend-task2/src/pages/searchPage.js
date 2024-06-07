@@ -14,9 +14,9 @@ class SearchPage extends Component {
                         <SearchBar />
                     </div>
                     <div className='button-group'>
-                        <Theme accentColor="gray" radius="large">
-                            <Button className='btn' >Search User</Button>
-                            <Button className='btn'>Search Recipe</Button>
+                        <Theme accentColor="gray" radius="large" >
+                            <Button className='btn' style={{marginRight: 10}} >Search User</Button>
+                            <Button className='btn' style={{marginLeft: 10}}>Search Recipe</Button>
                         </Theme>
                     </div>
                 </div>

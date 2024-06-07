@@ -5,6 +5,7 @@ const mongoose = require("mongoose")
 const crudRoutes = require("./routes/crudRoutes")
 const cookieParser = require("cookie-parser");
 const fileRoutes = require("./routes/fileRoutes")
+
 const cors = require("cors")
 
 const app = express()
@@ -24,7 +25,7 @@ const dbUrl = 'mongodb+srv://noelshaji:987654321@practice-mongodb.vuoqpkx.mongod
 //CONNECT TO MONGO DB
 mongoose.connect(dbUrl)
     .then((result) => {
-        app.listen(3000, function () {
+        app.listen(4000, function () {
             console.log("Server is running & Connected to Database!")
         })
     })

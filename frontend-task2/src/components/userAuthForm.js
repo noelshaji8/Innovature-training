@@ -26,20 +26,21 @@ function UserAuthForm() {
             console.error('Registration error:', error);
             // Handle error (show message, etc.)
         }
-      
+
     };
 
     const handleLogin = async () => {
         try {
-            await loginUser({ "username": username, "password": password });
-            dispatch(login(username));
-            navigate('/home');
+            const userInfo = await loginUser({ "username": username, "password": password });
+            console.log(userInfo)
+            dispatch(login(userInfo.requiredUser));
+            navigate('/display');
 
         } catch (error) {
             console.error('Login error:', error);
             // Handle error (show message, etc.)
         }
-     
+
     };
 
     return (

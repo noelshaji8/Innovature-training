@@ -60,7 +60,7 @@ router.post("/login", async (req, res) => {
     const userjwt = tokenUser
     const accessToken = jwt.sign(userjwt, accessSecret, { expiresIn: "900s" })
     res.cookie("token", accessToken)
-    return res.send({ accessToken: accessToken })
+    return res.send({ accessToken: accessToken, requiredUser: requiredUser })
 })
 
 module.exports = router

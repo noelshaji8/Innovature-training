@@ -219,13 +219,20 @@ input {
     height: 20px;
     width: 100px;
     margin: 20px;
-    position: absolute;
-    top: 0;
-    right: 0;
+
     background-color: red;
     /* For visualization */
     padding: 10px;
     /* For visualization */
+}
+
+.top-right{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    top: 0;
+    right: 0;
 }
 
 

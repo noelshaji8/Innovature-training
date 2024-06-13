@@ -1,19 +1,26 @@
 <script setup lang="js">
 import {  NumberFieldInput, NumberFieldRoot } from 'radix-vue'
 import { Icon } from '@iconify/vue'
-import { ref } from 'vue'
+import { computed } from 'vue'
 import {  SelectContent,  SelectGroup,  SelectItem,  SelectItemIndicator,  SelectItemText,  SelectPortal,  SelectRoot,  SelectScrollDownButton,  SelectScrollUpButton,  SelectTrigger,  SelectValue,  SelectViewport,} from 'radix-vue'
+import { useStore } from 'vuex';
 
-     const fruit = ref();
 
-        const options = ["Add", "Subtract", "Multiply", "Divide"];
+const store = useStore();
+
+const user = computed(() => store.getters.getUser);
+
+  const options = ["Add", "Subtract", "Multiply", "Divide"];
        
 </script>
 
 <template>
   <div className="App">
     <div className="Appbar">
-      <button class="rounded-button" id="logout">Logout</button>
+      <div class="top-right">
+        <h2>Hi {{ user }}</h2>
+        <button class="rounded-button" id="logout">Logout</button>
+      </div>
       <h1>Enter the values</h1>
     </div>
     <div className="Description">
@@ -21,9 +28,7 @@ import {  SelectContent,  SelectGroup,  SelectItem,  SelectItemIndicator,  Selec
 
       <NumberFieldRoot id="age" class="NumberFieldRoot" :min="0">
         <div className="NumberFieldContainer">
-          
           <NumberFieldInput class="NumberFieldInput" />
-          
         </div>
       </NumberFieldRoot>
 
@@ -69,9 +74,7 @@ import {  SelectContent,  SelectGroup,  SelectItem,  SelectItemIndicator,  Selec
 
       <NumberFieldRoot id="age" class="NumberFieldRoot" :min="0">
         <div className="NumberFieldContainer">
-          
           <NumberFieldInput class="NumberFieldInput" />
-          
         </div>
       </NumberFieldRoot>
     </div>
@@ -84,7 +87,5 @@ import {  SelectContent,  SelectGroup,  SelectItem,  SelectItemIndicator,  Selec
 
 
 <style>
-
 @import "../assets/styles.css";
-
 </style>

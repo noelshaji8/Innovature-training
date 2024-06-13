@@ -49,13 +49,13 @@ router.post("/login", async (req, res) => {
 
     try {
         if (await bcrypt.compare(req.body["password"], user["password"])) {
-            console.log("success")
+            console.log("successful login")
         }
         else {
-            return res.status(404).send("failed")
+            return res.status(404).send("failed login")
         }
     } catch (err) {
-        res.status(500).send(err)
+        return res.status(500).send("Invalid input")
     }
 
     //TOKEN GENERATION & SET AS COOKIE (TOKEN VALID FOR 15 MINS)
@@ -63,7 +63,7 @@ router.post("/login", async (req, res) => {
     const userjwt = req.body
     const accessToken = jwt.sign(userjwt, accessSecret,{expiresIn: "900s"})
     res.cookie("token", accessToken)
-    return res.send({accessToken: accessToken})
+    return res.send({accessToken: accessToken, requiredUser: req.body.username})
 })
 
 module.exports = router

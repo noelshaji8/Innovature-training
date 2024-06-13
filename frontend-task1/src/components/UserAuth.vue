@@ -1,10 +1,15 @@
 <script setup>
 import { Tabs } from "radix-vue/namespaced";
-import { ref } from "vue";
 import axios from "axios";
+import { ref } from 'vue'
+import { useStore } from 'vuex';
+import router from "../router";
 
 const username = ref("");
 const password = ref("");
+
+const store = useStore();
+
 
 const handleSignup = async () => {
   try {
@@ -17,7 +22,6 @@ const handleSignup = async () => {
       { withCredentials: true }
     );
     console.log("Signup successful:", response.data);
-    // Handle successful signup (e.g., display a message, redirect, etc.)
   } catch (error) {
     console.error("Signup error:", error);
     // Handle signup error (e.g., display an error message)
@@ -35,7 +39,8 @@ const handleLogin = async () => {
       { withCredentials: true }
     );
     console.log("Login successful:", response.data);
-    // Handle successful login (e.g., store token, redirect, etc.)
+    store.dispatch('login', response.data.requiredUser);
+    router.push({ name: 'ArithPage' }); // Navigate to the UserInfo page
   } catch (error) {
     console.error("Login error:", error);
     // Handle login error (e.g., display an error message)

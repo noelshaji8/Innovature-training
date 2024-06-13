@@ -1,6 +1,46 @@
-<script setup lang="js">
-import { Tabs } from 'radix-vue/namespaced'
+<script setup>
+import { Tabs } from "radix-vue/namespaced";
+import { ref } from "vue";
+import axios from "axios";
 
+const username = ref("");
+const password = ref("");
+
+const handleSignup = async () => {
+  try {
+    const response = await axios.post(
+      "http://localhost:4000/signup",
+      {
+        username: username.value,
+        password: password.value,
+      },
+      { withCredentials: true }
+    );
+    console.log("Signup successful:", response.data);
+    // Handle successful signup (e.g., display a message, redirect, etc.)
+  } catch (error) {
+    console.error("Signup error:", error);
+    // Handle signup error (e.g., display an error message)
+  }
+};
+
+const handleLogin = async () => {
+  try {
+    const response = await axios.post(
+      "http://localhost:4000/login",
+      {
+        username: username.value,
+        password: password.value,
+      },
+      { withCredentials: true }
+    );
+    console.log("Login successful:", response.data);
+    // Handle successful login (e.g., store token, redirect, etc.)
+  } catch (error) {
+    console.error("Login error:", error);
+    // Handle login error (e.g., display an error message)
+  }
+};
 </script>
 
 <template>
@@ -31,10 +71,9 @@ import { Tabs } from 'radix-vue/namespaced'
             <input
               type="text"
               required
-              :value="username"
-              :onChange="(e) => setUsername(e.target.value)"
+              v-model="username"
               className="Input"
-              id="name"
+              id="username"
               placeholder="Username"
             />
           </fieldset>
@@ -42,16 +81,15 @@ import { Tabs } from 'radix-vue/namespaced'
             <input
               type="password"
               required
-              :value="password"
-              :onChange="(e) => setPassword(e.target.value)"
+              v-model="password"
               className="Input"
-              id="username"
+              id="password"
               placeholder="Password"
             />
           </fieldset>
           <div className="Button">
-            <button className="Button green" :onClick="handleSignup">
-              Submit 
+            <button className="Button green" @click="handleSignup">
+              Submit
             </button>
           </div>
         </Tabs.Content>
@@ -62,29 +100,27 @@ import { Tabs } from 'radix-vue/namespaced'
           <p className="Text">Enter your login credentials here.</p>
           <fieldset className="Fieldset">
             <input
-              className="Input"
-              required
-              :value="username"
-              :onChange="(e) => setUsername(e.target.value)"
-              id="currentPassword"
-              placeholder="Username"
               type="text"
+              required
+              v-model="username"
+              className="Input"
+              id="username"
+              placeholder="Username"
             />
           </fieldset>
           <fieldset className="Fieldset">
             <input
-              className="Input"
-              required
-              :value="password"
-              :onChange="(e) => setPassword(e.target.value)"
-              id="newPassword"
-              placeholder="Password"
               type="password"
+              required
+              v-model="password"
+              className="Input"
+              id="password"
+              placeholder="Password"
             />
           </fieldset>
 
           <div className="Button">
-            <button className="Button green" :onClick="handleLogin">
+            <button className="Button green" @click="handleLogin">
               Proceed
             </button>
           </div>
@@ -96,7 +132,5 @@ import { Tabs } from 'radix-vue/namespaced'
 
 
 <style >
-
 @import "../assets/styles.css";
-
 </style>

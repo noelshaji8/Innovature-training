@@ -20,8 +20,6 @@ function UserAuthForm() {
         try {
             await registerUser({ "username": username, "password": password });
             // dispatch(login(username));
-
-
         } catch (error) {
             console.error('Registration error:', error);
             // Handle error (show message, etc.)

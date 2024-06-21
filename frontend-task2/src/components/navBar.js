@@ -8,7 +8,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { logout } from '../redux/userSlice';
 import { useNavigate } from 'react-router-dom';
 import { readAllRecipes, readOwnRecipes, searchRecipe, searchUser } from "../Api"
-import { readAll, readOwn, logoutRecipe, searchRecipeAction, searchUserRecipes } from "../redux/recipeSlice"
+import { readRecipe, logoutRecipe, } from "../redux/recipeSlice"
 
 
 function NavBar() {
@@ -30,10 +30,11 @@ function NavBar() {
     }
   };
 
-  const handleUserRecipes = async () => {
+ const handleUserRecipes = async () => {
       try {
           const recipesData = await readOwnRecipes();
-          dispatch(readOwn(recipesData))        
+          dispatch(readRecipe(recipesData))      
+          navigate("/display")
   
       } catch (error) {
           console.error('display error:', error);
@@ -45,7 +46,8 @@ function NavBar() {
   const handleAllRecipes = async () => {
       try {
           const recipesData = await readAllRecipes();
-          dispatch(readAll(recipesData))
+          dispatch(readRecipe(recipesData))
+          navigate("/recipes")
           
       } catch (error) {
           console.error('display error:', error);
@@ -53,7 +55,6 @@ function NavBar() {
       }
   
   };
-
 
 
   return (
@@ -65,10 +66,10 @@ function NavBar() {
         <span className="user-name">{user.username}</span>
       </div>
       <NavigationMenu.List className="nav-list">
-        <NavigationMenu.Item className="nav-item" onClick={handleUserRecipes}><Link to="/display">Home</Link></NavigationMenu.Item>
-        <NavigationMenu.Item className="nav-item" onClick={handleAllRecipes}><Link to="/recipes">All Recipes</Link></NavigationMenu.Item>
+        <NavigationMenu.Item className="nav-item" ><Link onClick={handleUserRecipes} >Home</Link></NavigationMenu.Item>
+        <NavigationMenu.Item className="nav-item" ><Link onClick={handleAllRecipes} >All Recipes</Link></NavigationMenu.Item>
         <NavigationMenu.Item className="nav-item" ><Link to="/search">Search</Link></NavigationMenu.Item>
-        {/* <NavigationMenu.Item className="nav-item" ><Link to="/add_delete">Add/Delete</Link></NavigationMenu.Item> */}
+        <NavigationMenu.Item className="nav-item" ><Link to="/add">Add</Link></NavigationMenu.Item>
         <NavigationMenu.Item className="nav-item" onClick={handleLogout}><Link>Logout</Link></NavigationMenu.Item>
       </NavigationMenu.List>
     </NavigationMenu.Root>

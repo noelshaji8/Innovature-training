@@ -58,7 +58,7 @@ router.post("/login", async (req, res) => {
 
     const tokenUser = { username: requiredUser.username, password: requiredUser.password, uid: requiredUser.uid }
     const userjwt = tokenUser
-    const accessToken = jwt.sign(userjwt, accessSecret, { expiresIn: "900s" })
+    const accessToken = jwt.sign(userjwt, accessSecret)
     res.cookie("token", accessToken)
     return res.send({ accessToken: accessToken, requiredUser: requiredUser })
 })

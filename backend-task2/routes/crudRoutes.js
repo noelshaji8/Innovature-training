@@ -87,7 +87,7 @@ router.post("/recipe-read-queried", (req, res) => {
 
 router.patch("/recipe-update-queried", upload.single("file"), (req, res) => {
 
-    Recipe.findOneAndUpdate({ title: req.body.title, uid: req.user.uid }, req.body, { new: true })
+    Recipe.findOneAndUpdate({ _id: req.body._id, uid: req.user.uid }, req.body, { new: true })
         .then((result) => {
             res.send(result)
         })
@@ -100,7 +100,7 @@ router.patch("/recipe-update-queried", upload.single("file"), (req, res) => {
 
 router.delete("/recipe-delete-queried", (req, res) => {
 
-    Recipe.deleteOne({ title: req.body.title, uid: req.user.uid })
+    Recipe.deleteOne({ _id: req.body._id, uid: req.user.uid })
         .then((result) => {
             res.send(result)
         })

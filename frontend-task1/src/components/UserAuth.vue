@@ -1,8 +1,8 @@
 <script setup>
 import { Tabs } from "radix-vue/namespaced";
 import axios from "axios";
-import { ref } from 'vue'
-import { useStore } from 'vuex';
+import { ref } from "vue";
+import { useStore } from "vuex";
 import router from "../router";
 
 const username = ref("");
@@ -10,6 +10,20 @@ const password = ref("");
 
 const store = useStore();
 
+const errorMessage = ref();
+
+const showError = (error) => {
+  // if (!error) {
+  //   errorMessage.value.innerText = "Signup successful";
+  //   errorMessage.value.style.visibility = "visible";
+  //   errorMessage.value.style.color = "green";
+  // }
+  // Access and update the DOM element directly
+  if (errorMessage.value) {
+    errorMessage.value.innerText = error;
+    errorMessage.value.style.visibility = "visible";
+  }
+};
 
 const handleSignup = async () => {
   try {
@@ -22,9 +36,10 @@ const handleSignup = async () => {
       { withCredentials: true }
     );
     console.log("Signup successful:", response.data);
+    showError("");
   } catch (error) {
-    console.error("Signup error:", error);
-    // Handle signup error (e.g., display an error message)
+    console.error(error.response.data);
+    showError(error.response.data);
   }
 };
 
@@ -38,12 +53,13 @@ const handleLogin = async () => {
       },
       { withCredentials: true }
     );
+
     console.log("Login successful:", response.data);
-    store.dispatch('login', response.data.requiredUser);
-    router.push({ name: 'ArithPage' }); // Navigate to the UserInfo page
+    store.dispatch("login", response.data.requiredUser);
+    router.push({ name: "ArithPage" }); // Navigate to the UserInfo page
   } catch (error) {
-    console.error("Login error:", error);
-    // Handle login error (e.g., display an error message)
+    console.error(error.response.data);
+    showError(error.response.data);
   }
 };
 </script>
@@ -92,6 +108,11 @@ const handleLogin = async () => {
               placeholder="Password"
             />
           </fieldset>
+          <div
+            class="error-msg"
+            ref="errorMessage"
+            style="visibility: hidden; margin: 18px; color: red"
+          ></div>
           <div className="Button">
             <button className="Button green" @click="handleSignup">
               Submit
@@ -123,7 +144,11 @@ const handleLogin = async () => {
               placeholder="Password"
             />
           </fieldset>
-
+          <div
+            class="error-msg"
+            ref="errorMessage"
+            style="visibility: hidden; margin: 18px; color: red"
+          ></div>
           <div className="Button">
             <button className="Button green" @click="handleLogin">
               Proceed

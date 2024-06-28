@@ -7,7 +7,6 @@ import { useSelector, useDispatch } from 'react-redux';
 import RecipeCard from '../components/recipeCard';
 import RecipePage from "../pages/recipePage";
 import CreatePage from "../pages/createPage";
-import UpdatePage from './updatePage';
 import { readAllRecipes, readOwnRecipes, searchRecipe, searchUser } from "../Api"
 import { readRecipe } from "../redux/recipeSlice"
 

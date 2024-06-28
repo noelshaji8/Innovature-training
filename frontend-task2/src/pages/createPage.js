@@ -18,14 +18,14 @@ function CreatePage() {
     const recipes = useSelector((state) => state.recipe)
     const user = useSelector((state) => state.user)
 
-    useEffect(()=>{
-        if(pathname==="/update"){
+    useEffect(() => {
+        if (pathname === "/update") {
             setTitle(recipes.recipe.title);
             setDescription(recipes.recipe.description);
             setIngredients(recipes.recipe.ingredients);
             setMethod(recipes.recipe.method)
         }
-    },[pathname])
+    }, [pathname])
 
     const handleRecipeSubmit = async () => {
         try {

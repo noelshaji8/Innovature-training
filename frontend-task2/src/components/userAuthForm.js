@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import * as Tabs from '@radix-ui/react-tabs';
 import '../styles.css';
 import { Link } from 'react-router-dom';
@@ -16,12 +16,17 @@ function UserAuthForm() {
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
+    const errorMessage = useRef();
+
     const handleSignup = async () => {
         try {
             await registerUser({ "username": username, "password": password });
-            // dispatch(login(username));
+            errorMessage.current.innerText = ""
+            errorMessage.current.style.visibility = "hidden"
         } catch (error) {
-            console.error('Registration error:', error);
+            console.error(error);
+            errorMessage.current.innerText = error
+            errorMessage.current.style.visibility = "visible"
             // Handle error (show message, etc.)
         }
 
@@ -32,10 +37,15 @@ function UserAuthForm() {
             const userInfo = await loginUser({ "username": username, "password": password });
             console.log(userInfo)
             dispatch(login(userInfo.requiredUser));
+            errorMessage.current.innerText = ""
+            errorMessage.current.style.visibility = "hidden"
             navigate('/display');
 
         } catch (error) {
-            console.error('Login error:', error);
+            console.error(error);
+            errorMessage.current.innerText = error
+            errorMessage.current.style.visibility = "visible"
+
             // Handle error (show message, etc.)
         }
 
@@ -64,6 +74,9 @@ function UserAuthForm() {
                     <fieldset className="Fieldset">
                         <input type="password" required value={password} onChange={(e) => setPassword(e.target.value)} className="Input" id="username" placeholder='Password' />
                     </fieldset>
+
+                    <div className='error-msg' ref={errorMessage} style={{ visibility: "hidden", margin: 18, color: "red" }}></div>
+
                     <div className='Button' >
                         <button className="Button green" onClick={handleSignup}><Link style={{ color: 'inherit', textDecoration: 'inherit' }} >Submit</Link></button>
                     </div>
@@ -81,6 +94,8 @@ function UserAuthForm() {
 
                         <input className="Input" required value={password} onChange={(e) => setPassword(e.target.value)} id="newPassword" placeholder='Password' type="password" />
                     </fieldset>
+
+                    <div className='error-msg' ref={errorMessage} style={{ visibility: "hidden", margin: 18, color: "red" }}></div>
 
                     <div className='Button'>
                         <button className="Button green" onClick={handleLogin} ><Link style={{ color: 'inherit', textDecoration: 'inherit' }}>Proceed</Link></button>

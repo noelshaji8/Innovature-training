@@ -92,7 +92,7 @@ router.patch("/recipe-update-queried", upload.single("file"), (req, res) => {
             res.send(result)
         })
         .catch((err) => {
-            res.send("err")
+            res.send(err)
         })
 })
 

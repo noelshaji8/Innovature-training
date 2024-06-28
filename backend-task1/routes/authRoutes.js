@@ -20,50 +20,59 @@ router.post("/signup", async (req, res) => {
     if (checkUsers) {
         return res.status(400).json('User already exists');
     }
-    
-    try {
-        const salt = await bcrypt.genSalt()
-        const hashPassword = await bcrypt.hash(req.body["password"], salt)
-        const user = { "username": req.body["username"], "password": hashPassword }
-        users.push(user)
-        res.status(201).send(users)
-    } catch {
-        res.status(500).send("error")
+    if ((req.body.username) && (req.body.password)) {
+        try {
+            const salt = await bcrypt.genSalt()
+            const hashPassword = await bcrypt.hash(req.body["password"], salt)
+            const user = { "username": req.body["username"], "password": hashPassword }
+            users.push(user)
+            res.status(201).send(users)
+        } catch {
+            res.status(500).send("error")
+        }
     }
+    else {
+        res.status(500).send("Input error")
+    }
+
+
 });
 
 //LOGIN WITH ENCODED PASSWORD CHECK AND JWT GENERATION
 
 router.post("/login", async (req, res) => {
 
-    const checkFunction = (user) => {
-        if (user["username"] === req.body["username"]) {
-            return user
+    if ((req.body.username) && (req.body.password)) {
+        const checkFunction = (user) => {
+            if (user["username"] === req.body["username"]) {
+                return user
+            }
         }
+
+        const user = users.find(checkFunction)
+        if (user == null) {
+            return res.status(400).send("No user")
+        }
+
+        try {
+            if (await bcrypt.compare(req.body["password"], user["password"])) {
+                console.log("successful login")
+            }
+            else {
+                return res.status(404).send("Incorrect password")
+            }
+        } catch (err) {
+            return res.status(500).send("Invalid input")
+        }
+
+        //TOKEN GENERATION & SET AS COOKIE (TOKEN VALID FOR 15 MINS)
+
+        const userjwt = req.body
+        const accessToken = jwt.sign(userjwt, accessSecret)
+        res.cookie("token", accessToken)
+        return res.send({ accessToken: accessToken, requiredUser: req.body.username })
     }
 
-    const user = users.find(checkFunction)
-    if (user == null) {
-        return res.status(400).send("No user")
-    }
-
-    try {
-        if (await bcrypt.compare(req.body["password"], user["password"])) {
-            console.log("successful login")
-        }
-        else {
-            return res.status(404).send("failed login")
-        }
-    } catch (err) {
-        return res.status(500).send("Invalid input")
-    }
-
-    //TOKEN GENERATION & SET AS COOKIE (TOKEN VALID FOR 15 MINS)
-
-    const userjwt = req.body
-    const accessToken = jwt.sign(userjwt, accessSecret,{expiresIn: "900s"})
-    res.cookie("token", accessToken)
-    return res.send({accessToken: accessToken, requiredUser: req.body.username})
 })
 
 module.exports = router
